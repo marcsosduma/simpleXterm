@@ -7,7 +7,7 @@ var term = new window.Terminal({
 term.open(document.getElementById('terminal'));
 
 term.setOption("theme", {
-      background: "black",
+      background: "#202B33",
       foreground: "#F5F8FA",
     });
 
@@ -27,27 +27,29 @@ function init() {
         switch (e) {
             case '\u0003': // Ctrl+C
                 term.write('^C');
-                socket.send('^C');
                 prompt(term);
                 break;
             case '\r': // Enter
-                socket.send('\n');
+                runCommand(term, command);
+                command = '';
                 break;
             case '\u007F': // Backspace (DEL)
                 // Do not delete the prompt
                 if (term._core.buffer.x > 2) {
                     term.write('\b \b');
-                    socket.send('\b \b');
+                    if (command.length > 0) {
+                        command = command.substr(0, command.length - 1);
+                    }
                 }
                 break;
             case '\u0009':
                 console.log('tabbed', output, ["dd", "ls"]);
                 break;
             default:
-               // if (e >= String.fromCharCode(0x20) && e <= String.fromCharCode(0x7E) || e >= '\u00a0') {
-                    //term.write(e);
-                    socket.send(e);
-               // }
+                if (e >= String.fromCharCode(0x20) && e <= String.fromCharCode(0x7E) || e >= '\u00a0') {
+                    command += e;
+                    term.write(e);
+                }
         }
     });
 }
@@ -59,8 +61,8 @@ function clearInput(command) {
     }
 }
 function prompt(term) {
+    command = '';
     term.write('\r\n$ ');
-    //socket.send('\r\n$ ');
 }
 socket.onmessage = (event) => {
     term.write(event.data);
@@ -69,7 +71,7 @@ socket.onmessage = (event) => {
 function runCommand(term, command) {
     if (command.length > 0) {
         clearInput(command);
-        socket.send('\n');
+        socket.send(command + '\n');
         return;
     }
 }
