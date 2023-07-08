@@ -4,7 +4,11 @@ var pty = require('node-pty');
 var exec = require('child_process').exec;
 
 const wss = new WebSocket.Server({ port: 9050 })
-exec('firefox index.html');
+if (os.platform() === 'win32')
+    exec('index.html');
+else
+    exec('firefox index.html');
+
 console.log("Socket is up and running...")
 
 var shell = os.platform() === 'win32' ? 'powershell.exe' : 'sh';
