@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "node-pty": "^0.10.1",
-    "ws": "^8.8.1"
+    "ws": "^8.8.1",
+    "xterm": "^5.2.1",
+    "xterm-addon-fit": "^0.7.0"
   }
 }

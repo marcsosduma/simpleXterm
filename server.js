@@ -28,6 +28,6 @@ wss.on('connection', ws => {
 
     ptyProcess.on('data', function (data) {
         ws.send(data)
-        console.log(data);
+        //console.log(data);
     });
 })

@@ -1,9 +1,10 @@
 
 const socket = new WebSocket("ws://localhost:9050");
-
+//var fitAddon = new FitAddon();
 var term = new window.Terminal({
     cursorBlink: false
 });
+//term.loadAddon(fitAddon)
 term.open(document.getElementById('terminal'));
 
 term.setOption("theme", {
@@ -11,6 +12,10 @@ term.setOption("theme", {
       foreground: "white",
     });
 term._core._inputHandler._coreService.isCursorHidden;
+
+//window.onresize = function () {
+//    fitAddon.fit();
+//}
 
 function init() {
     if (term._initialized) {
@@ -43,11 +48,11 @@ function clearInput(command) {
     }
 }
 function send1(){
-    socket.send('stty rows 40 && stty cols 132;sleep 2041160180\n');
+    socket.send('sleep 2041160180\n');
 }
 function prompt(term) {
     term.write('\r\n>');
-   // setTimeout(send1, 605 );
+    setTimeout(send1, 1005 );
 }
 socket.onmessage = (event) => {
     term.write(event.data);
