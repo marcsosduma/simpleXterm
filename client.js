@@ -2,14 +2,15 @@
 const socket = new WebSocket("ws://localhost:9050");
 
 var term = new window.Terminal({
-    cursorBlink: true
+    cursorBlink: false
 });
 term.open(document.getElementById('terminal'));
 
 term.setOption("theme", {
       background: "black",
-      foreground: "#F5F8FA",
+      foreground: "white",
     });
+term._core._inputHandler._coreService.isCursorHidden;
 
 function init() {
     if (term._initialized) {
@@ -27,27 +28,10 @@ function init() {
         switch (e) {
             case '\u0003': // Ctrl+C
                 term.write('^C');
-                socket.send('^C');
-                prompt(term);
-                break;
-            case '\r': // Enter
-                socket.send('\n');
-                break;
-            case '\u007F': // Backspace (DEL)
-                // Do not delete the prompt
-                if (term._core.buffer.x > 2) {
-                    term.write('\b \b');
-                    socket.send('\b \b');
-                }
-                break;
-            case '\u0009':
-                console.log('tabbed', output, ["dd", "ls"]);
+                socket.send("exit\n");
                 break;
             default:
-               // if (e >= String.fromCharCode(0x20) && e <= String.fromCharCode(0x7E) || e >= '\u00a0') {
-                    //term.write(e);
-                    socket.send(e);
-               // }
+                socket.send(e);
         }
     });
 }
@@ -58,20 +42,15 @@ function clearInput(command) {
         term.write('\b \b');
     }
 }
+function send1(){
+    socket.send('stty rows 40 && stty cols 132;sleep 2041160180\n');
+}
 function prompt(term) {
-    term.write('\r\n$ ');
-    //socket.send('\r\n$ ');
+    term.write('\r\n>');
+   // setTimeout(send1, 605 );
 }
 socket.onmessage = (event) => {
     term.write(event.data);
-}
-
-function runCommand(term, command) {
-    if (command.length > 0) {
-        clearInput(command);
-        socket.send('\n');
-        return;
-    }
 }
 
 init();
