@@ -3,10 +3,22 @@
     <head>
       <link href="css/xterm.min.css" rel="stylesheet" type="text/css"/>
       <link href="css/fullscreen.min.css" rel="stylesheet" type="text/css"/>
+      <link href="css/default_index.css" rel="stylesheet" type="text/css"/>
       <script src="js/xterm.min.js"></script>
       <script src="js/xterm-addon-fit.min.js"></script>
     </head>
     <body>
+      <div id="root">
+          <h2>Change Font Size</h2>
+          <h4>
+            FontSize:
+            <select id="selFont" onChange="fontSizeSelected()">
+                <option value=14>14</option>
+                <option value=18>18</option>
+                <option value=24>24</option>
+            </select>
+          </h4>
+      </div>
       <div id="terminal"></div>
     </head>
     </body>

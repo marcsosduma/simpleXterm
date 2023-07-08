@@ -4,12 +4,32 @@ const socket = new WebSocket("ws://localhost:9050");
 var term = new window.Terminal({
     cursorBlink: false
 });
+const styles = {
+    fontFamily: "sans-serif",
+    textAlign: "center"
+  };
+
+
+fontSizeSelected = function() {
+    var e = document.getElementById("selFont");
+    var value = e.value;
+    //var text = e.options[e.selectedIndex].text;
+    term.setOption("fontSize", value);
+    term.refresh(0, term.rows - 1);
+};
+
 //term.loadAddon(fitAddon)
 term.open(document.getElementById('terminal'));
 
 term.setOption("theme", {
       background: "black",
       foreground: "white",
+      fontSize: 14,
+      fontFamily: 'courier-new, courier, monospace',
+      cursor: "#41A863",
+      cols: 80,
+      rows: 40,
+      screenKeys: true,
     });
 term._core._inputHandler._coreService.isCursorHidden;
 
@@ -51,7 +71,7 @@ function send1(){
     socket.send('sleep 2041160180\n');
 }
 function prompt(term) {
-    term.write('\r\n>');
+    term.write('\r\n$');
    // setTimeout(send1, 1005 );
 }
 socket.onmessage = (event) => {
