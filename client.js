@@ -4,11 +4,6 @@ const socket = new WebSocket("ws://localhost:9050");
 var term = new window.Terminal({
     cursorBlink: false
 });
-const styles = {
-    fontFamily: "sans-serif",
-    textAlign: "center"
-  };
-
 
 fontSizeSelected = function() {
     var e = document.getElementById("selFont");
