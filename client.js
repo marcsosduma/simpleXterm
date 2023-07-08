@@ -52,7 +52,7 @@ function send1(){
 }
 function prompt(term) {
     term.write('\r\n>');
-    setTimeout(send1, 1005 );
+   // setTimeout(send1, 1005 );
 }
 socket.onmessage = (event) => {
     term.write(event.data);
